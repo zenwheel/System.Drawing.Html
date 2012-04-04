@@ -131,7 +131,8 @@ namespace System.Drawing.Html
         /// <returns>System.Drawing.Color value</returns>
         public static Color GetActualColor(string colorValue)
         {
-            int r = 0;
+			int a = 0xff;
+			int r = 0;
             int g = 0;
             int b = 0;
             Color onError = Color.Empty;
@@ -145,7 +146,14 @@ namespace System.Drawing.Html
                 #region hexadecimal forms
                 string hex = colorValue.Substring(1);
 
-                if (hex.Length == 6)
+				if (hex.Length == 8)
+				{
+					a = int.Parse(hex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
+					r = int.Parse(hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
+					g = int.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
+					b = int.Parse(hex.Substring(6, 2), System.Globalization.NumberStyles.HexNumber);
+				}
+                else if (hex.Length == 6)
                 {
                     r = int.Parse(hex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
                     g = int.Parse(hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
@@ -245,7 +253,7 @@ namespace System.Drawing.Html
                 #endregion
             }
 
-            return Color.FromArgb(r, g, b);
+            return Color.FromArgb(a, r, g, b);
         }
 
         /// <summary>
