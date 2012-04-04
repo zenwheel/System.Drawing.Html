@@ -84,6 +84,16 @@ namespace System.Drawing.Html
             if (clip) g.SetClip(prevClip, System.Drawing.Drawing2D.CombineMode.Replace);
         }
 
+		public static float GetPreferredHeight(Graphics g, string html, float width)
+		{
+			InitialContainer container = new InitialContainer(html);
+			RectangleF area = new RectangleF(new PointF(0, 0), new SizeF(width, 0));
+
+			container.SetBounds(area);
+			container.MeasureBounds(g);
+			return container.MaximumSize.Height;
+		}
+
         #endregion
     }
 }
