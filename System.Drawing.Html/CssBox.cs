@@ -1804,7 +1804,24 @@ namespace System.Drawing.Html
 
                     if (fsize <= 1f) fsize = CssDefaults.FontSize;
 
-                    _actualFont = new Font(FontFamily, fsize, st);
+					try
+					{
+						_actualFont = new Font(FontFamily, fsize, st);
+					}
+					catch
+					{
+						// for fonts that are only bold or italic, attempt to load them if the initialization fails
+						try
+						{
+							st = System.Drawing.FontStyle.Bold;
+							_actualFont = new Font(FontFamily, fsize, st);
+						}
+						catch
+						{
+							st = System.Drawing.FontStyle.Italic;
+							_actualFont = new Font(FontFamily, fsize, st);
+						}
+					}
                 }
                 return _actualFont; 
             }
