@@ -1,0 +1,184 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8AD34FE8-8382-4A8A-B3AA-A0392ED42423}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Html_Demo</RootNamespace>
+    <AssemblyName>Html Demo</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ColorPicker.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ColorPicker.Designer.cs">
+      <DependentUpon>ColorPicker.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Bridge.cs" />
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="MainForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="SampleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SampleForm.Designer.cs">
+      <DependentUpon>SampleForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SyntaxHilight.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\System.Drawing.Html\System.Drawing.Html.csproj">
+      <Project>{1B058920-24B4-4140-8AE7-C8C6C38CA52D}</Project>
+      <Name>System.Drawing.Html</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Window.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\property32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\refreshdocument32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete16.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete32.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\exclamation32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\favorites32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\font32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\formula32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\paly32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ColorPicker.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ColorPicker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Samples\00.Intro.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\comment16.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\web_pallete.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Samples\02.HtmlPanel.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Samples\03.HtmlLabel.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Samples\04.HtmlToolTip.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Samples\05.Text.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Samples\08.Images.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Samples\07.Links.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Samples\06.Tables.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Samples\11.About.htm" />
+    <EmbeddedResource Include="Samples\10.Warnings.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SampleForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SampleForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Samples\09.NonStandard.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\image32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\property16.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\method16.gif" />
+    <EmbeddedResource Include="Samples\01.HtmlRenderer.htm" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

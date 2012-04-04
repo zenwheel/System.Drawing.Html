@@ -1,0 +1,104 @@
+<html>
+	<head>
+		<title>Text</title>
+		<link rel="Stylesheet" href="property:Html_Demo.Bridge.StyleSheet" />
+	</head>
+	<body>
+	   <h1>Text</h1>
+	   <blockquote>
+	   
+	   <h2>Alignment</h2>
+	   <p>Simple paragraphs can be used to create a document. Alignment can be used as you already know.</p>
+	   
+	   <p><font color=red>Warning:</font>P tags must be closed. In fact all tags with the end tag <a href="http://www.w3.org/TR/1999/REC-html401-19991224/index/elements.html">marked as optional</a>, must be closed. It may be fixed by next release.</p>
+	   
+	   <h3>Left aligned</h3>
+	   <p align="left" class="gray">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ornare mollis elit. Integer sagittis. Fusce elementum commodo felis. Vivamus lacinia eleifend libero. Donec lacus. Nam sit amet urna. Nullam nulla. Donec accumsan porta magna. Mauris a dolor eu elit rutrum commodo. Nam iaculis turpis non augue. Nullam lobortis egestas risus. Nulla elementum dolor ac mauris. Ut tristique. In varius volutpat metus. Integer leo dolor, tristique a, dignissim ac, iaculis eget, elit. Donec arcu.</p>
+	   
+	   <h3>Center aligned</h3>
+	   <p align="center" class="gray">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ornare mollis elit. Integer sagittis. Fusce elementum commodo felis. Vivamus lacinia eleifend libero. Donec lacus. Nam sit amet urna. Nullam nulla. Donec accumsan porta magna. Mauris a dolor eu elit rutrum commodo. Nam iaculis turpis non augue. Nullam lobortis egestas risus. Nulla elementum dolor ac mauris. Ut tristique. In varius volutpat metus. Integer leo dolor, tristique a, dignissim ac, iaculis eget, elit. Donec arcu.</p>
+	   
+	   <h3>Right aligned</h3>
+	   <p class="gray" align="right">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ornare mollis elit. Integer sagittis. Fusce elementum commodo felis. Vivamus lacinia eleifend libero. Donec lacus. Nam sit amet urna. Nullam nulla. Donec accumsan porta magna. Mauris a dolor eu elit rutrum commodo. Nam iaculis turpis non augue. Nullam lobortis egestas risus. Nulla elementum dolor ac mauris. Ut tristique. In varius volutpat metus. Integer leo dolor, tristique a, dignissim ac, iaculis eget, elit. Donec arcu.</p>
+	   
+	   <h3>Justifed</h3>
+	   <p class="gray" align="justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ornare mollis elit. Integer sagittis. Fusce elementum commodo felis. Vivamus lacinia eleifend libero. Donec lacus. Nam sit amet urna. Nullam nulla. Donec accumsan porta magna. Mauris a dolor eu elit rutrum commodo. Nam iaculis turpis non augue. Nullam lobortis egestas risus. Nulla elementum dolor ac mauris. Ut tristique. In varius volutpat metus. Integer leo dolor, tristique a, dignissim ac, iaculis eget, elit. Donec arcu.</p>
+       
+       <hr>
+       
+       <h2>Formatting</h2>
+       
+       <p>You can use all the well known tags and CSS properties to format text, fonts and colors.</p>
+       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. <b>Curabitur</b> ornare mollis elit. Integer sagittis. Fusce elementum commodo felis. <span bgcolor=yellow>Vivamus lacinia eleifend libero. Donec lacus. Nam sit amet urna.</span> Nullam nulla. Donec accumsan porta magna. <font color=blue>Mauris a <b>dolor</b></font> eu elit rutrum commodo. Nam iaculis turpis non augue. Nullam lobortis egestas risus. Nulla elementum dolor ac mauris. Ut tristique. In varius volutpat metus. Integer leo dolor, tristique a, dignissim ac, iaculis eget, elit. Donec arcu.</p>
+       
+       <p><b color=red>Important Note:</b> Background colors are not drawn when the block has text-align property of <code>justify</code>. It may be fixed by the next release.</p>
+       
+       <h2>Preformatted text</h2>
+       <p>The preformatted text is fully supported, like this C# code demo:</p>
+       <pre style="background-color:white">
+<span color=green>//Example of code using preformatted text</span>
+<span color=blue>public class</span> HelloWorld
+{
+    <span color=blue>public</span> HelloWorld()
+    {
+        <span color=#099>MessageBox</span>.Show(<span color=maroon>"Hello World"</span>);
+    }
+}
+       
+       </pre>
+       
+       <p></p>
+       <hr />
+       
+       <h2>Lists</h2>
+       
+       <p>Both UL and OL tags are supported, though, all the CSS properties related with lists are not still <i>fully supported.</i>. The maximum you will get is bullets and numbers. Image bullets and better numbering support may be added by next release.</p>
+       
+       <h3>Unordered list</h3>
+       <ul>
+       <li>Item one</li><li>Item two</li><li>Item three</li><li>Item four</li><li>Item five</li>
+       </ul>
+       
+       <h3>Ordered list</h3>
+       <ol>
+       <li>Item one</li><li>Item two</li><li>Item three</li><li>Item four</li><li>Item five</li>
+       </ol>
+       
+       <h3>List nesting</h3>
+       <ol>
+       <li>Item one</li><li>Item two</li><li>Item three
+       <ul style="margin-top:0;margin-bottom:0">
+       <li>Item one</li><li>Item two</li><li>Item three</li><li>Item four</li><li>Item five</li>
+       </ul>
+       </li><li>Item four</li><li>Item five</li>
+       </ol>
+       
+       <p></p>
+       <hr />
+       
+       <h1>Right to left direction</h1>
+       
+       <p>It may not behave exactly like the specification says, but it can be useful if you use it for right-to-left languages. All you have to do is to alter the <code>direction</code> property like this:</p>
+       <pre>.myparagraph { <span color=maroon>direction:rtl;</span> }</pre>
+       
+       <h2>Left aligned</h2>
+	   <p class="gray" align="left" style="direction:rtl">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ornare mollis elit. Integer sagittis. Fusce elementum commodo felis. Vivamus lacinia eleifend libero. Donec lacus. Nam sit amet urna. Nullam nulla. Donec accumsan porta magna. Mauris a dolor eu elit rutrum commodo. Nam iaculis turpis non augue. Nullam lobortis egestas risus. Nulla elementum dolor ac mauris. Ut tristique. In varius volutpat metus. Integer leo dolor, tristique a, dignissim ac, iaculis eget, elit. Donec arcu.</p>
+	   
+	   <h2>Center aligned</h2>
+	   <p class="gray" align="center" style="direction:rtl">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ornare mollis elit. Integer sagittis. Fusce elementum commodo felis. Vivamus lacinia eleifend libero. Donec lacus. Nam sit amet urna. Nullam nulla. Donec accumsan porta magna. Mauris a dolor eu elit rutrum commodo. Nam iaculis turpis non augue. Nullam lobortis egestas risus. Nulla elementum dolor ac mauris. Ut tristique. In varius volutpat metus. Integer leo dolor, tristique a, dignissim ac, iaculis eget, elit. Donec arcu.</p>
+	   
+	   <h2>Right aligned</h2>
+	   <p class="gray" align="right" style="direction:rtl">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ornare mollis elit. Integer sagittis. Fusce elementum commodo felis. Vivamus lacinia eleifend libero. Donec lacus. Nam sit amet urna. Nullam nulla. Donec accumsan porta magna. Mauris a dolor eu elit rutrum commodo. Nam iaculis turpis non augue. Nullam lobortis egestas risus. Nulla elementum dolor ac mauris. Ut tristique. In varius volutpat metus. Integer leo dolor, tristique a, dignissim ac, iaculis eget, elit. Donec arcu.</p>
+	   
+	   <h2>Justifed</h2>
+	   <p class="gray" align="justify" style="direction:rtl">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ornare mollis elit. Integer sagittis. Fusce elementum commodo felis. Vivamus lacinia eleifend libero. Donec lacus. Nam sit amet urna. Nullam nulla. Donec accumsan porta magna. Mauris a dolor eu elit rutrum commodo. Nam iaculis turpis non augue. Nullam lobortis egestas risus. Nulla elementum dolor ac mauris. Ut tristique. In varius volutpat metus. Integer leo dolor, tristique a, dignissim ac, iaculis eget, elit. Donec arcu.</p>
+	   
+	   <blockquote>
+	   <p>If you know about right-to-left and know exactly how it should behave, please write to me: <a href="http://www.menendezpoo.com">www.menendezpoo.com</a></p>
+	   </blockquote>
+	   
+       </blockquote>
+       
+       
+	</body>
+</html>
