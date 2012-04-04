@@ -18,23 +18,23 @@ All the known CSS properties apply to each of this boxes. Each box may contain a
 
 A typical use of an Inital Container to draw HTML would look like this:
 
-  //Create the InitialContainer
-  InitialContainer c = new InitialContainer("<html>");
-  
-   
-  //Give bounds to the container
-  c.SetBounds(ClientRectangle);
-  
-   
-  //Measure bounds of each box on the tree
-  c.MeasureBounds(graphics);
-   
-  
-  //Paint the HTML document
-  c.Paint(graphics);
+    //Create the InitialContainer
+    InitialContainer c = new InitialContainer("<html>");
+    
+     
+    //Give bounds to the container
+    c.SetBounds(ClientRectangle);
+    
+     
+    //Measure bounds of each box on the tree
+    c.MeasureBounds(graphics);
+     
+    
+    //Paint the HTML document
+    c.Paint(graphics);
 
 
-![](http://i3.codeplex.com/Download?ProjectName=HtmlRenderer&amp;DownloadId=54352)
+![alt text](http://i3.codeplex.com/Download?ProjectName=HtmlRenderer&amp;DownloadId=54352 "First a label, then a panel and at last a ToolTip, all of which support HTML rendering.")
 *First a label, then a panel and at last a ToolTip, all of which support HTML rendering.*
 
 You may never use it, since I provided Controls and Methods that creates this object for you.
@@ -43,22 +43,25 @@ You may never use it, since I provided Controls and Methods that creates this ob
 A panel that is ready to accept HTML code via its Text property. It's full name is System.Windows.Forms.HtmlPanel
 
 The only properties you need to know are:
-* AutoScroll. Activates/Deactivates the auto-scroll capabilities as you know. It is set to true by default.
-* Text. Gets/Sets the HTML source.
-* The panel will update the bounds of the elements as you scroll or resize the control.
+
+*	AutoScroll. Activates/Deactivates the auto-scroll capabilities as you know. It is set to true by default.
+*	Text. Gets/Sets the HTML source.
+*	The panel will update the bounds of the elements as you scroll or resize the control.
 
 ## HtmlLabel
 A label that is ready to accept HTML code via its Text property. It's full name is System.Windows.Forms.HtmlLabel
 
 The only properties you need to know are:
-* AutoScroll. Activates/Deactivates the auto-scroll capabilities as you know. It is set to true by default.
-* AutoSize. Sets the size of the label automatically if activated.
-* Text. Gets/Sets the HTML source.
+
+*	AutoScroll. Activates/Deactivates the auto-scroll capabilities as you know. It is set to true by default.
+*	AutoSize. Sets the size of the label automatically if activated.
+*	Text. Gets/Sets the HTML source.
 
 Some interesting things:
-* The label will update the bounds of the elements as you scroll or resize the control.
-* The label can be transparent
-* The panel has better performance than the label.
+
+*	The label will update the bounds of the elements as you scroll or resize the control.
+*	The label can be transparent
+*	The panel has better performance than the label.
 
 ## HtmlToolTip
 Works exactly like the ToolTip you already know, with the little difference that this tooltip will render HTML on it. It's full name is System.Windows.Forms.HtmlToolTip
@@ -67,23 +70,26 @@ There are no properties here to learn. Use it just the way you use the ToolTip t
 
 # Some features of my own
 I took the liberty of adding a copule of features:
-* Background gradients
-* Rounded corners
+
+*	Background gradients
+*	Rounded corners
 
 These are achieved thru the following CSS properties:
-* background-gradient: (color)
-* background-gradient-angle: (number)
-* corner-ne-radius: (length)
-* corner-nw-radius: (length)
-* corner-se-radius: (length)
-* corner-se-radius: (length)
-* corner-radius: (length){1,4} (shorthand for all corners)
+
+*	background-gradient: (color)
+*	background-gradient-angle: (number)
+*	corner-ne-radius: (length)
+*	corner-nw-radius: (length)
+*	corner-se-radius: (length)
+*	corner-se-radius: (length)
+*	corner-radius: (length){1,4} (shorthand for all corners)
 
 What's currently supported by the Renderer?
-* Most border, padding and margin and positioning CSSproperties (except for the height property).
-* Text alignment horizontally and vertically, text indents too.
-* Lists, ordered and unordered. Advanced numbering is not yet supported.
-* Tables, almost at all of it. Cell combinations work quite well as far as I tested them.
-* Fonts (partially) and Colors
-* Backgrounds (just color)
+
+*	Most border, padding and margin and positioning CSSproperties (except for the height property).
+*	Text alignment horizontally and vertically, text indents too.
+*	Lists, ordered and unordered. Advanced numbering is not yet supported.
+*	Tables, almost at all of it. Cell combinations work quite well as far as I tested them.
+*	Fonts (partially) and Colors
+*	Backgrounds (just color)
 
