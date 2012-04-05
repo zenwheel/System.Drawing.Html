@@ -3034,13 +3034,16 @@ namespace System.Drawing.Html
                     {
 						using (GraphicsPath path = new GraphicsPath())
 						{
+							CssBox body = null;
+							if (InitialContainer != null && InitialContainer.Boxes.Count > 0)
+								body = InitialContainer.Boxes[0];
 							//g.DrawString(word.Text, f, b, word.Left - word.LastMeasureOffset.X + offset.X, word.Top + offset.Y);
 							float emSize = g.DpiX * f.SizeInPoints / 72f;
 							path.AddString(word.Text, f.FontFamily, (int)f.Style, emSize, new PointF(word.Left - word.LastMeasureOffset.X + offset.X, word.Top + offset.Y), StringFormat.GenericDefault);
 							g.FillPath(b, path);
-							if (ParentBox.ActualTextOutline > 0)
+							if (body != null && body.ActualTextOutline > 0)
 							{
-								using (Pen pen = new Pen(ParentBox.ActualTextOutlineColor, ParentBox.ActualTextOutline))
+								using (Pen pen = new Pen(body.ActualTextOutlineColor, body.ActualTextOutline))
 									g.DrawPath(pen, path);
 							}
 						}
