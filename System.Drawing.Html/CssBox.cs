@@ -171,6 +171,8 @@ namespace System.Drawing.Html
         private string _textAlign;
         private string _textDecoration;
         private string _textIndent;
+		private string _textOutline;
+		private string _textOutlineColor;
         private string _top;
         private string _position;
         private string _verticalAlign;
@@ -1034,6 +1036,24 @@ namespace System.Drawing.Html
             set { _wordSpacing = NoEms(value); }
         }
 
+
+		[CssProperty("text-outline")]
+		[DefaultValue("0")]
+		public string TextOutline
+		{
+			get { return _textOutline; }
+			set { _textOutline = NoEms(value); }
+		}
+
+
+		[CssProperty("text-outline-color")]
+		[DefaultValue("none")]
+		public string TextOutlineColor
+		{
+			get { return _textOutlineColor; }
+			set { _textOutlineColor = value; }
+		}
+
         #endregion
 
         #region Font
@@ -1256,10 +1276,12 @@ namespace System.Drawing.Html
         private float _actualBorderBottomWidth = float.NaN;
         private float _actualBorderRightWidth = float.NaN;
         private Color _actualBackgroundGradient = System.Drawing.Color.Empty;
+		private float _actualTextOutline = float.NaN;
         private System.Drawing.Color _actualBorderTopColor = System.Drawing.Color.Empty;
         private System.Drawing.Color _actualBorderLeftColor = System.Drawing.Color.Empty;
         private System.Drawing.Color _actualBorderBottomColor = System.Drawing.Color.Empty;
         private System.Drawing.Color _actualBorderRightColor = System.Drawing.Color.Empty;
+		private System.Drawing.Color _actualTextOutlineColor = System.Drawing.Color.Empty;
         private float _actualWordSpacing = float.NaN;
         private Color _actualBackgroundColor = System.Drawing.Color.Empty;
         private Font _actualFont = null;
@@ -1847,6 +1869,39 @@ namespace System.Drawing.Html
                 return _actualTextIndent; 
             }
         }
+
+
+		/// <summary>
+		/// Gets the color of the text outline
+		/// </summary>
+		public Color ActualTextOutlineColor
+		{
+			get
+			{
+				if (_actualTextOutlineColor.IsEmpty)
+				{
+					_actualTextOutlineColor = CssValue.GetActualColor(TextOutlineColor);
+				}
+				return _actualTextOutlineColor;
+			}
+		}
+
+
+		/// <summary>
+		/// Gets the width of the outline for the text
+		/// </summary>
+		public float ActualTextOutline
+		{
+			get
+			{
+				if (float.IsNaN(_actualTextOutline))
+				{
+					_actualTextOutline = CssValue.ParseLength(TextOutline, ActualFont.Height, this);
+				}
+
+				return _actualTextOutline;
+			}
+		}
 
 
         #endregion
@@ -2977,7 +3032,18 @@ namespace System.Drawing.Html
                 {
                     foreach (CssBoxWord word in Words)
                     {
-                        g.DrawString(word.Text, f, b, word.Left - word.LastMeasureOffset.X + offset.X, word.Top + offset.Y);
+						using (GraphicsPath path = new GraphicsPath())
+						{
+							//g.DrawString(word.Text, f, b, word.Left - word.LastMeasureOffset.X + offset.X, word.Top + offset.Y);
+							float emSize = g.DpiX * f.SizeInPoints / 72f;
+							path.AddString(word.Text, f.FontFamily, (int)f.Style, emSize, new PointF(word.Left - word.LastMeasureOffset.X + offset.X, word.Top + offset.Y), StringFormat.GenericDefault);
+							g.FillPath(b, path);
+							if (ParentBox.ActualTextOutline > 0)
+							{
+								using (Pen pen = new Pen(ParentBox.ActualTextOutlineColor, ParentBox.ActualTextOutline))
+									g.DrawPath(pen, path);
+							}
+						}
                     }
                 }
 
