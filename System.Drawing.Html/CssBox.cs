@@ -174,6 +174,8 @@ namespace System.Drawing.Html
 		private string _textOutline;
 		private string _textOutlineColor;
 		private string _textGlowColor;
+		private string _textGradientColor;
+		private string _textGradientAngle;
         private string _top;
         private string _position;
         private string _verticalAlign;
@@ -1063,6 +1065,22 @@ namespace System.Drawing.Html
 			set { _textGlowColor = value; }
 		}
 
+		[CssProperty("text-gradient-color")]
+		[DefaultValue("none")]
+		public string TextGradientColor
+		{
+			get { return _textGradientColor; }
+			set { _textGradientColor = value; }
+		}
+
+		[CssProperty("text-gradient-angle")]
+		[DefaultValue("0")]
+		public string TextGradientAngle
+		{
+			get { return _textGradientAngle; }
+			set { _textGradientAngle = value; }
+		}
+
         #endregion
 
         #region Font
@@ -1292,6 +1310,8 @@ namespace System.Drawing.Html
         private System.Drawing.Color _actualBorderRightColor = System.Drawing.Color.Empty;
 		private System.Drawing.Color _actualTextOutlineColor = System.Drawing.Color.Empty;
 		private System.Drawing.Color _actualTextGlowColor = System.Drawing.Color.Empty;
+		private System.Drawing.Color _actualTextGradientColor = System.Drawing.Color.Empty;
+		private float _actualTextGradientAngle = 0f;
         private float _actualWordSpacing = float.NaN;
         private Color _actualBackgroundColor = System.Drawing.Color.Empty;
         private Font _actualFont = null;
@@ -1908,6 +1928,34 @@ namespace System.Drawing.Html
 					_actualTextGlowColor = CssValue.GetActualColor(TextGlowColor);
 				}
 				return _actualTextGlowColor;
+			}
+		}
+
+		/// <summary>
+		/// Gets the color to be the other end of the gradient from the normal text color
+		/// </summary>
+		public Color ActualTextGradientColor
+		{
+			get
+			{
+				if (_actualTextGradientColor.IsEmpty)
+				{
+					_actualTextGradientColor = CssValue.GetActualColor(TextGradientColor);
+				}
+				return _actualTextGradientColor;
+			}
+		}
+
+
+		/// <summary>
+		/// Gets the angle of the text gradient
+		/// </summary>
+		public float ActualTextGradientAngle
+		{
+			get
+			{
+				_actualTextGradientAngle = CssValue.ParseNumber(TextGradientAngle, 360);
+				return _actualTextGradientAngle;
 			}
 		}
 
@@ -3042,30 +3090,31 @@ namespace System.Drawing.Html
                 PaintBorder(g, actualRect, i == 0, i == rects.Length - 1);
             }
 
-            if (IsImage)
-            {
-                RectangleF r = Words[0].Bounds; r.Offset(offset);
-                r.Height -= ActualBorderTopWidth + ActualBorderBottomWidth + ActualPaddingTop + ActualPaddingBottom;
-                r.Y += ActualBorderTopWidth + ActualPaddingTop;
-                //HACK: round rectangle only when necessary
-                g.DrawImage(Words[0].Image, Rectangle.Round(r));
-            }
-            else
-            {
-                Font f = ActualFont;
-                using (SolidBrush textBrush = new SolidBrush(CssValue.GetActualColor(Color)))
-                {
-                    foreach (CssBoxWord word in Words)
-                    {
+			if (IsImage)
+			{
+				RectangleF r = Words[0].Bounds; r.Offset(offset);
+				r.Height -= ActualBorderTopWidth + ActualBorderBottomWidth + ActualPaddingTop + ActualPaddingBottom;
+				r.Y += ActualBorderTopWidth + ActualPaddingTop;
+				//HACK: round rectangle only when necessary
+				g.DrawImage(Words[0].Image, Rectangle.Round(r));
+			}
+			else
+			{
+				Font f = ActualFont;
+				CssBox body = null;
+				if (InitialContainer != null && InitialContainer.Boxes.Count > 0)
+					body = InitialContainer.Boxes[0];
+
+				using (GraphicsPath gradientPath = new GraphicsPath())
+				{
+					foreach (CssBoxWord word in Words)
+					{
 						using (GraphicsPath path = new GraphicsPath())
 						{
-							CssBox body = null;
-							if (InitialContainer != null && InitialContainer.Boxes.Count > 0)
-								body = InitialContainer.Boxes[0];
-
 							// draw with a path instead
 							float emSize = g.DpiX * f.SizeInPoints / 72f;
 							path.AddString(word.Text, f.FontFamily, (int)f.Style, emSize, new PointF(word.Left - word.LastMeasureOffset.X + offset.X, word.Top + offset.Y), StringFormat.GenericDefault);
+							gradientPath.AddString(word.Text, f.FontFamily, (int)f.Style, emSize, new PointF(word.Left - word.LastMeasureOffset.X + offset.X, word.Top + offset.Y), StringFormat.GenericDefault);
 
 							if (body.ActualTextGlowColor.IsEmpty == false)
 							{
@@ -3096,19 +3145,35 @@ namespace System.Drawing.Html
 							}
 
 							// draw actual text
-							g.FillPath(textBrush, path);
-
-							// and then the outline on top of the text
-							if (body != null && body.ActualTextOutline > 0 && body.ActualTextOutlineColor.IsEmpty == false)
+							if (body.ActualTextGradientColor.IsEmpty)
 							{
-								using (Pen pen = new Pen(body.ActualTextOutlineColor, body.ActualTextOutline))
-									g.DrawPath(pen, path);
+								using (SolidBrush textBrush = new SolidBrush(CssValue.GetActualColor(Color)))
+									g.FillPath(textBrush, path);
+
+								// and then the outline on top of the text
+								if (body != null && body.ActualTextOutline > 0 && body.ActualTextOutlineColor.IsEmpty == false)
+								{
+									using (Pen pen = new Pen(body.ActualTextOutlineColor, body.ActualTextOutline))
+										g.DrawPath(pen, path);
+								}
 							}
 						}
-                    }
-                }
+					}
 
-            }
+					if (body.ActualTextGradientColor.IsEmpty == false)
+					{
+						using (LinearGradientBrush textBrush = new LinearGradientBrush(body.Bounds, CssValue.GetActualColor(Color), body.ActualTextGradientColor, body.ActualTextGradientAngle))
+							g.FillPath(textBrush, gradientPath);
+
+						// and then the outline on top of the text
+						if (body != null && body.ActualTextOutline > 0 && body.ActualTextOutlineColor.IsEmpty == false)
+						{
+							using (Pen pen = new Pen(body.ActualTextOutlineColor, body.ActualTextOutline))
+								g.DrawPath(pen, gradientPath);
+						}
+					}
+				}
+			}
             for (int i = 0; i < rects.Length; i++)
             {
                 RectangleF actualRect = rects[i]; actualRect.Offset(offset);
