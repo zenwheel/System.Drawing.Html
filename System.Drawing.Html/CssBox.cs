@@ -173,6 +173,7 @@ namespace System.Drawing.Html
         private string _textIndent;
 		private string _textOutline;
 		private string _textOutlineColor;
+		private string _textGlowColor;
         private string _top;
         private string _position;
         private string _verticalAlign;
@@ -1054,6 +1055,14 @@ namespace System.Drawing.Html
 			set { _textOutlineColor = value; }
 		}
 
+		[CssProperty("text-glow-color")]
+		[DefaultValue("none")]
+		public string TextGlowColor
+		{
+			get { return _textGlowColor; }
+			set { _textGlowColor = value; }
+		}
+
         #endregion
 
         #region Font
@@ -1282,6 +1291,7 @@ namespace System.Drawing.Html
         private System.Drawing.Color _actualBorderBottomColor = System.Drawing.Color.Empty;
         private System.Drawing.Color _actualBorderRightColor = System.Drawing.Color.Empty;
 		private System.Drawing.Color _actualTextOutlineColor = System.Drawing.Color.Empty;
+		private System.Drawing.Color _actualTextGlowColor = System.Drawing.Color.Empty;
         private float _actualWordSpacing = float.NaN;
         private Color _actualBackgroundColor = System.Drawing.Color.Empty;
         private Font _actualFont = null;
@@ -1883,6 +1893,21 @@ namespace System.Drawing.Html
 					_actualTextOutlineColor = CssValue.GetActualColor(TextOutlineColor);
 				}
 				return _actualTextOutlineColor;
+			}
+		}
+
+		/// <summary>
+		/// Gets the color of the text glow
+		/// </summary>
+		public Color ActualTextGlowColor
+		{
+			get
+			{
+				if (_actualTextGlowColor.IsEmpty)
+				{
+					_actualTextGlowColor = CssValue.GetActualColor(TextGlowColor);
+				}
+				return _actualTextGlowColor;
 			}
 		}
 
@@ -3028,7 +3053,7 @@ namespace System.Drawing.Html
             else
             {
                 Font f = ActualFont;
-                using (SolidBrush b = new SolidBrush(CssValue.GetActualColor(Color)))
+                using (SolidBrush textBrush = new SolidBrush(CssValue.GetActualColor(Color)))
                 {
                     foreach (CssBoxWord word in Words)
                     {
@@ -3037,11 +3062,44 @@ namespace System.Drawing.Html
 							CssBox body = null;
 							if (InitialContainer != null && InitialContainer.Boxes.Count > 0)
 								body = InitialContainer.Boxes[0];
-							//g.DrawString(word.Text, f, b, word.Left - word.LastMeasureOffset.X + offset.X, word.Top + offset.Y);
+
+							// draw with a path instead
 							float emSize = g.DpiX * f.SizeInPoints / 72f;
 							path.AddString(word.Text, f.FontFamily, (int)f.Style, emSize, new PointF(word.Left - word.LastMeasureOffset.X + offset.X, word.Top + offset.Y), StringFormat.GenericDefault);
-							g.FillPath(b, path);
-							if (body != null && body.ActualTextOutline > 0)
+
+							if (body.ActualTextGlowColor.IsEmpty == false)
+							{
+								// draw a glow around the text
+								int glowSize = Convert.ToInt32(emSize / 2.5);
+								using (Bitmap glowBitmap = new Bitmap(Convert.ToInt32(word.Width) + glowSize, Convert.ToInt32(word.Height) + glowSize))
+								{
+									using (Graphics glowGraphics = Graphics.FromImage(glowBitmap))
+									{
+										using (GraphicsPath glowTextPath = new GraphicsPath())
+										{
+											// draw only the word in the corner, we'll place it onto the parent graphics in the right location later
+											glowTextPath.AddString(word.Text, f.FontFamily, (int)f.Style, emSize, new PointF(0, 0), StringFormat.GenericDefault);
+											using (Pen widen = new Pen(System.Drawing.Color.Black, glowSize / 2))
+												glowTextPath.Widen(widen);
+
+											using (Brush glowBrush = new SolidBrush(body.ActualTextGlowColor))
+												glowGraphics.FillPath(glowBrush, glowTextPath);
+										}
+										Convolution.BoxFilter boxFilter = new Convolution.BoxFilter();
+										// 3 box filters approximate a gaussian blur
+										using (Bitmap bm2 = boxFilter.FastBoxBlur(glowBitmap, 4))
+										using (Bitmap bm3 = boxFilter.FastBoxBlur(bm2, 4))
+										using (Bitmap blurred = boxFilter.FastBoxBlur(bm3, 4))
+											g.DrawImage(blurred, word.Left - word.LastMeasureOffset.X + offset.X - 2, word.Top + offset.Y - 2);
+									}
+								}
+							}
+
+							// draw actual text
+							g.FillPath(textBrush, path);
+
+							// and then the outline on top of the text
+							if (body != null && body.ActualTextOutline > 0 && body.ActualTextOutlineColor.IsEmpty == false)
 							{
 								using (Pen pen = new Pen(body.ActualTextOutlineColor, body.ActualTextOutline))
 									g.DrawPath(pen, path);
