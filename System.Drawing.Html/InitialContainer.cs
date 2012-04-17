@@ -488,11 +488,16 @@ namespace System.Drawing.Html
             return result;
         }
 
-        public override void MeasureBounds(Graphics g)
+		public override void MeasureBounds(Graphics g)
+		{
+			MeasureBounds(g, false);
+		}
+
+        public override void MeasureBounds(Graphics g, bool expandBounds)
         {
             LinkRegions.Clear();
 
-            base.MeasureBounds(g);
+            base.MeasureBounds(g, expandBounds);
         }
 
         #endregion

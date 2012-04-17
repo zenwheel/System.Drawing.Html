@@ -1027,7 +1027,12 @@ namespace System.Drawing.Html
         public string WhiteSpace
         {
             get { return _whiteSpace; }
-            set { _whiteSpace = value; }
+			set
+			{
+				_whiteSpace = value;
+				if(_text != null)
+					UpdateWords();
+			}
         }
 
 
@@ -2810,12 +2815,22 @@ namespace System.Drawing.Html
                 b == null ? 0 : b.ActualMarginTop);
         }
 
+		/// <summary>
+        /// Measures the bounds of box and children, recursively.
+        /// </summary>
+        /// <param name="g">Device context to draw</param>
+        /// <param name="layoutRect">Rectangle containing the fragment</param>
+		public virtual void MeasureBounds(Graphics g)
+		{
+			MeasureBounds(g, false);
+		}
+
         /// <summary>
         /// Measures the bounds of box and children, recursively.
         /// </summary>
         /// <param name="g">Device context to draw</param>
         /// <param name="layoutRect">Rectangle containing the fragment</param>
-        public virtual void MeasureBounds(Graphics g)
+        public virtual void MeasureBounds(Graphics g, bool expandBounds)
         {
             if (Display == CssConstants.None) return;
 
@@ -2879,7 +2894,7 @@ namespace System.Drawing.Html
                     if (ContainsInlinesOnly())
                     {
                         ActualBottom = Location.Y;
-                        CssLayoutEngine.CreateLineBoxes(g, this); //This will automatically set the bottom of this block
+                        CssLayoutEngine.CreateLineBoxes(g, this, expandBounds); //This will automatically set the bottom of this block
                     }
                     else
                     {
@@ -2890,7 +2905,7 @@ namespace System.Drawing.Html
                         {
                             if (box.Display == CssConstants.None) continue;
                             //box.Display = CssConstants.Block; //Force to be block, according to CSS spec
-                            box.MeasureBounds(g);
+                            box.MeasureBounds(g, expandBounds);
                             lastOne = box;
                         }
 
@@ -3445,10 +3460,19 @@ namespace System.Drawing.Html
 
             Words.Clear();
 
-            CssBoxWordSplitter splitter = new CssBoxWordSplitter(this, Text);
-            splitter.SplitWords();
+			if (WhiteSpace == CssConstants.Nowrap)
+			{
+				CssBoxWord b = new CssBoxWord(this);
+				b.Text = Text;
+				Words.Add(b);
+			}
+			else
+			{
+				CssBoxWordSplitter splitter = new CssBoxWordSplitter(this, Text);
+				splitter.SplitWords();
 
-            Words.AddRange(splitter.Words);
+				Words.AddRange(splitter.Words);
+			}
         }
 
         

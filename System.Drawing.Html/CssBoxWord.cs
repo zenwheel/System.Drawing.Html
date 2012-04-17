@@ -150,6 +150,7 @@ namespace System.Drawing.Html
         public string Text
         {
             get { return _word; }
+			set { _word = value; }
         }
 
         /// <summary>
@@ -183,6 +184,15 @@ namespace System.Drawing.Html
         {
             _word += c;
         }
+
+		/// <summary>
+		/// Prepends the specified char to the word's text
+		/// </summary>
+		/// <param name="c"></param>
+		internal void PrependChar(char c)
+		{
+			_word = c + _word;
+		}
 
         /// <summary>
         /// Represents this word for debugging purposes

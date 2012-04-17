@@ -191,6 +191,8 @@ namespace System.Drawing.Html
         /// </summary>
         public static string FontFantasy = "Comic Sans MS";
 
+		public static bool SystemTextDirectionRTL = false;
+
         /// <summary>
         /// Default font used for the generic 'monospace' family
         /// </summary>

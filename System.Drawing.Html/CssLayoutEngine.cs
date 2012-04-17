@@ -19,12 +19,22 @@ namespace System.Drawing.Html
 
         #region Inline Boxes
 
+		/// <summary>
+        /// Creates line boxes for the specified blockbox
+        /// </summary>
+        /// <param name="g"></param>
+        /// <param name="blockBox"></param>
+		public static void CreateLineBoxes(Graphics g, CssBox blockBox)
+		{
+			CreateLineBoxes(g, blockBox, false);
+		}
+
         /// <summary>
         /// Creates line boxes for the specified blockbox
         /// </summary>
         /// <param name="g"></param>
         /// <param name="blockBox"></param>
-        public static void CreateLineBoxes(Graphics g, CssBox blockBox)
+        public static void CreateLineBoxes(Graphics g, CssBox blockBox, bool expandBounds)
         {
 
             blockBox.LineBoxes.Clear();
@@ -62,6 +72,8 @@ namespace System.Drawing.Html
             }
 
             blockBox.ActualBottom = maxBottom + blockBox.ActualPaddingBottom + blockBox.ActualBorderBottomWidth;
+			if (expandBounds)
+				blockBox.ActualRight = curx;
         }
 
         /// <summary>
