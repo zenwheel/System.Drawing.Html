@@ -3094,6 +3094,9 @@ namespace System.Drawing.Html
             {
                 RectangleF actualRect = rects[i]; actualRect.Offset(offset);
 
+				if(CssDefaults.SystemTextDirectionRTL && InitialContainer != null)
+					actualRect.Offset(InitialContainer.Bounds.Width - actualRect.Width, 0);
+
                 if (InitialContainer != null && HtmlTag != null && HtmlTag.TagName.Equals("a", StringComparison.CurrentCultureIgnoreCase))
                 {
                     if (InitialContainer.LinkRegions.ContainsKey(this)) InitialContainer.LinkRegions.Remove(this);
@@ -3192,6 +3195,9 @@ namespace System.Drawing.Html
             for (int i = 0; i < rects.Length; i++)
             {
                 RectangleF actualRect = rects[i]; actualRect.Offset(offset);
+
+				if (CssDefaults.SystemTextDirectionRTL && InitialContainer != null)
+					actualRect.Offset(InitialContainer.Bounds.Width - actualRect.Width, 0);
 
                 PaintDecoration(g, actualRect, i == 0, i == rects.Length - 1);
             }
