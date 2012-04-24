@@ -3197,7 +3197,19 @@ namespace System.Drawing.Html
                 RectangleF actualRect = rects[i]; actualRect.Offset(offset);
 
 				if (CssDefaults.SystemTextDirectionRTL && InitialContainer != null)
-					actualRect.Offset(InitialContainer.Bounds.Width - actualRect.Width, 0);
+				{
+					switch (TextAlign)
+					{
+						case CssConstants.Right:
+							actualRect.Offset(0 - (InitialContainer.Bounds.Width - actualRect.Width), 0);
+							break;
+						/*case CssConstants.Center:
+						case CssConstants.Justify:*/
+						default:
+							actualRect.Offset(InitialContainer.Bounds.Width - actualRect.Width, 0);
+							break;
+					}
+				}
 
                 PaintDecoration(g, actualRect, i == 0, i == rects.Length - 1);
             }
