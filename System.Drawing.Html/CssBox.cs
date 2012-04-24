@@ -3203,8 +3203,11 @@ namespace System.Drawing.Html
 						case CssConstants.Right:
 							actualRect.Offset(0 - (InitialContainer.Bounds.Width - actualRect.Width), 0);
 							break;
-						/*case CssConstants.Center:
-						case CssConstants.Justify:*/
+						case CssConstants.Center:
+							if(Words.Count > 0)
+								actualRect.Offset(0 - actualRect.Width, 0);
+							break;
+						/*case CssConstants.Justify:*/
 						default:
 							actualRect.Offset(InitialContainer.Bounds.Width - actualRect.Width, 0);
 							break;
